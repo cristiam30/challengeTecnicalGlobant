@@ -1,10 +1,12 @@
 import pandas as pd
 import numpy as np
 
+file_input = str(input("Digite la ruta local de los archivos a cargar: (departments.csv, hired_employees.csv, jobs.csv): "))
+file_output = str(input("Digite la ruta local donde se exportaran los reportes: "))
 
-df_departaments = pd.read_csv('/Users/Cristiam/Documents/Globant/departments.csv', sep=',', header=None, names =['Id','Departament'])
-df_employees = pd.read_csv('/Users/Cristiam/Documents/Globant/hired_employees.csv', sep=',', header=None, names =['Id','Name','Datetime','Departament_id','Job_id'])
-df_jobs = pd.read_csv('/Users/Cristiam/Documents/Globant/jobs.csv', sep=',', header=None, names =['Id','Job'])
+df_departaments = pd.read_csv(file_input + 'departments.csv', sep=',', header=None, names =['Id','Departament'])
+df_employees = pd.read_csv(file_input + 'hired_employees.csv', sep=',', header=None, names =['Id','Name','Datetime','Departament_id','Job_id'])
+df_jobs = pd.read_csv(file_input + 'jobs.csv', sep=',', header=None, names =['Id','Job'])
 
 # 2021 filter year
 df_employees['Datetime'] = pd.to_datetime(df_employees['Datetime'])
@@ -24,7 +26,7 @@ pt = pd.pivot_table(dfEmp2021, values='Name', index=['Departament','Job'],
 #Export Report 1
 print('Report #1: \n')
 print(pt)
-pt.to_csv('/Users/Cristiam/Documents/Globant/challenge/projectNotebbok/challenge1.csv', sep=',')
+pt.to_csv(file_output + 'challenge1.csv', sep=',')
 
 #mean 2021
 mean2021 = dfEmp2021.groupby(by = ["Departament"]).count()["Id_x"].mean()
@@ -41,4 +43,4 @@ dfChallenge2 = dfCant[dfCant>mean2021].sort_values(ascending=False)
 #Export Report 2
 print('Report #2: \n')
 print(dfChallenge2)
-dfChallenge2.to_csv('/Users/Cristiam/Documents/Globant/challenge/projectNotebbok/challenge2.csv', sep=',')
+dfChallenge2.to_csv(file_output + 'challenge2.csv', sep=',')
